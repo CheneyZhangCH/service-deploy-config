@@ -1,0 +1,48 @@
+version: '3.8' # 根据当前docker版本取对应值 https://docs.docker.com/compose/compose-file/compose-versioning/
+
+services:
+  redis:
+    image: redis:3                  # 指定服务镜像
+    container_name: redis    # 容器名称
+    restart: always                 # 重启方式
+    hostname: redis
+    command: redis-server /usr/local/etc/redis/redis.conf --requirepass 123456  --appendonly yes
+    volumes:                        # 挂载数据卷
+      - /root/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:                          # 映射端口
+      - "6379:6379"
+    networks:                       # 加入指定网络
+      - app-network
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    ports:                          # 映射端口
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=root           # 创建lovelp用户
+      - MYSQL_PASSWORD=123456     # 设置lovelp用户的密码
+      - MYSQL_DATABASE=cnode_nestjs       # 创建初始数据库
+      - TZ=Asia/Shanghai            # 设置时区
+    volumes:                        # 挂载数据卷
+      - /root/mysql:/var/lib/mysql  # 为了数据持久化
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    networks:                       # 加入指定网络
+      - app-network
+
+  jenkins:
+    image: jenkins/jenkins:lts      # 镜像
+    container_name: jenkins         # 容器名称
+    privileged: true                # 解决权限问题
+    restart: always                 # 同 --restart 参数
+    ports:                          # 端口映射，同 -p 参数，本地端口:容器端口
+      - "8080:8080"
+      - "50000:50000"
+    volumes:                        # 数据卷,本地文件夹:容器文件夹
+      - /usr/local/docker/jenkins/jenkins_home:/var/jenkins_home
+
+networks:  # 实现通信
+  app-network:
+    driver: bridge
