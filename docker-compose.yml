@@ -41,7 +41,7 @@ services:
       - "8080:8080"
       - "50000:50000"
     volumes:                        # 数据卷,本地文件夹:容器文件夹
-      - /usr/local/docker/jenkins/jenkins_home:/var/jenkins_home
+      - /root/jenkins_home:/var/jenkins_home
 
 networks:  # 实现通信
   app-network:
