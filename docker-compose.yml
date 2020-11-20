@@ -21,10 +21,10 @@ services:
     ports:                          # 映射端口
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=root           # 创建lovelp用户
-      - MYSQL_PASSWORD=123456     # 设置lovelp用户的密码
-      - MYSQL_DATABASE=cnode_nestjs       # 创建初始数据库
+      - MYSQL_ROOT_PASSWORD=123456  # 设置root密码
+      - MYSQL_DATABASE=cnode_nestjs # 创建初始数据库
+      - MYSQL_USER=cnode            # 创建数据库对应的用户
+      - MYSQL_PASSWORD=123456       # 设置数据库对应用户的密码
       - TZ=Asia/Shanghai            # 设置时区
     volumes:                        # 挂载数据卷
       - /root/mysql:/var/lib/mysql  # 为了数据持久化
