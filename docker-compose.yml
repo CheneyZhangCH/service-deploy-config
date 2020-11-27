@@ -42,6 +42,9 @@ services:
       - "50000:50000"
     volumes:                        # 数据卷,本地文件夹:容器文件夹
       - /root/jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock # 建立通信。如果permission denied: 修改权限 sudo chmod 666 /var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker                                 # 这是为了我们可以在容器内使用docker命令
+      - /usr/local/bin/docker-compose:/usr/local/bin/docker-compose     # 同样的这是为了使用docker-compose命令
 
 networks:  # 实现通信
   app-network:
