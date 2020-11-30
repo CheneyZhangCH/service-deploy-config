@@ -3,11 +3,11 @@ version: '3.8' # 根据当前docker版本取对应值 https://docs.docker.com/co
 services:
   redis:
     image: redis:3                  # 指定服务镜像
-    container_name: redis    # 容器名称
+    container_name: redis           # 容器名称
     restart: always                 # 重启方式
     hostname: redis
     command: redis-server /usr/local/etc/redis/redis.conf --requirepass 123456  --appendonly yes
-    volumes:                        # 挂载数据卷
+    volumes:                        # 数据卷,本地文件夹:容器文件夹
       - /root/redis/redis.conf:/usr/local/etc/redis/redis.conf
     ports:                          # 映射端口
       - "6379:6379"
@@ -26,7 +26,7 @@ services:
       - MYSQL_USER=cnode            # 创建数据库对应的用户
       - MYSQL_PASSWORD=123456       # 设置数据库对应用户的密码
       - TZ=Asia/Shanghai            # 设置时区
-    volumes:                        # 挂载数据卷
+    volumes:                        # 数据卷,本地文件夹:容器文件夹
       - /root/mysql:/var/lib/mysql  # 为了数据持久化
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     networks:                       # 加入指定网络
